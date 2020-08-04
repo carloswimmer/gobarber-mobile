@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import {
   Image,
   KeyboardAvoidingView,
@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -23,6 +25,8 @@ import {
 } from './styles';
 
 const SignUp: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+
   const [showCreateAccount, setShowCreateAccount] = useState(true)
   const navigation = useNavigation();
 
@@ -44,6 +48,10 @@ const SignUp: React.FC = () => {
     setShowCreateAccount(true);
   }, []);
 
+  const handleSignUp = useCallback((data: object) => {
+    console.log(data)
+  }, [])
+
   return (
     <>
       <KeyboardAvoidingView
@@ -62,13 +70,20 @@ const SignUp: React.FC = () => {
               <Title>Crie sua conta</Title>
             </View>
 
-            <Input name="name" icon="user" placeholder="Nome"/>
-            <Input name="email" icon="mail" placeholder="E-mail"/>
-            <Input name="password" icon="lock" placeholder="Senha"/>
+            <Form ref={formRef} onSubmit={handleSignUp}>
+              <Input name="name" icon="user" placeholder="Nome" />
+              <Input name="email" icon="mail" placeholder="E-mail" />
+              <Input name="password" icon="lock" placeholder="Senha" />
 
-            <Button onPress={() => {}}>
-              Cadastrar
-            </Button>
+              <Button
+                onPress={() => {
+                  formRef.current?.submitForm();
+                  navigation.goBack();
+                }}
+              >
+                Cadastrar
+              </Button>
+            </Form>
 
           </Container>
         </ScrollView>
@@ -76,7 +91,7 @@ const SignUp: React.FC = () => {
 
       {showCreateAccount && (
         <BackToSignIn onPress={() => navigation.goBack()}>
-          <Icon name="arrow-left" size={20} color="#fff"/>
+          <Icon name="arrow-left" size={20} color="#fff" />
 
           <BackToSignInText>
             Voltar para logon
