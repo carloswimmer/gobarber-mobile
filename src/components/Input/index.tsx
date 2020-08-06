@@ -23,15 +23,20 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 ) => {
   const inputElementRef = useRef<any>(null);
 
-  const { registerField, defaultValue = '', fieldName, error } = useField(name);
+  const { registerField, defaultValue = '', fieldName, error, clearError } = useField(name);
   const inputValueRef = useRef<InputValueReferences>({ value: defaultValue });
 
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
 
   const handleInputFocus = useCallback(() => {
+    if (!!error) {
+      inputValueRef.current.value = '';
+      inputElementRef.current.clear();
+      clearError();
+    }
     setIsFocused(true);
-  }, [])
+  }, [error])
   const handleInputFill = useCallback(() => {
     setIsFocused(false);
     setIsFilled(!!inputValueRef.current.value);
@@ -59,6 +64,14 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     })
   }, [registerField, fieldName]);
 
+  useEffect(() => {
+    !!error ?
+      inputElementRef.current.setNativeProps({ text: error }) :
+      inputElementRef.current.setNativeProps({
+        text: inputValueRef.current.value,
+      });
+  }, [error])
+
   return (
     <Container isErrored={!!error} isFocused={isFocused}>
       <Icon
@@ -77,6 +90,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
         onChangeText={(value) => {
           inputValueRef.current.value = value;
         }}
+        isErrored={!!error}
         {...rest}
       />
     </Container>

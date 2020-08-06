@@ -77,6 +77,7 @@ const SignUp: React.FC = () => {
         abortEarly: false,
       })
 
+      console.log(data);
 
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -141,7 +142,10 @@ const SignUp: React.FC = () => {
                 name="password"
                 icon="lock"
                 placeholder="Senha"
-                secureTextEntry
+                secureTextEntry={
+                  formRef.current?.getFieldError('password') !==
+                  'No mínimo 6 dígitos'
+                }
                 textContentType="newPassword"
                 returnKeyType="send"
                 onSubmitEditing={() => {

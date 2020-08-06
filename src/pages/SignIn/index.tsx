@@ -77,6 +77,8 @@ const SignIn: React.FC = () => {
         abortEarly: false,
       });
 
+      console.log('data', data)
+
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
@@ -129,7 +131,10 @@ const SignIn: React.FC = () => {
                 name="password"
                 icon="lock"
                 placeholder="Senha"
-                secureTextEntry
+                secureTextEntry={
+                  formRef.current?.getFieldError('password') ===
+                  'Senha obrigatória'
+                }
                 returnKeyType="send"
                 onSubmitEditing={() => {
                   formRef.current?.submitForm();

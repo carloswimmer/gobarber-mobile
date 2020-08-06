@@ -6,6 +6,10 @@ interface ContainerProps {
   isErrored: boolean;
 }
 
+interface TextInputProps {
+  isErrored: boolean;
+}
+
 export const Container = styled.View<ContainerProps>`
   width: 100%;
   height: 60px;
@@ -29,11 +33,15 @@ export const Container = styled.View<ContainerProps>`
   align-items: center;
 `;
 
-export const TextInput = styled.TextInput`
+export const TextInput = styled.TextInput<TextInputProps>`
   flex: 1;
   font-family: 'RobotoSlab-Regular';
   font-size: 16px;
   color: #fff;
+
+  ${props => props.isErrored && css`
+    color: #c53030;
+  `}
 `;
 
 export const Icon = styled(FeatherIcon)`
