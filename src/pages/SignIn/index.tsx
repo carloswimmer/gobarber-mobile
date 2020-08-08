@@ -16,6 +16,7 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -42,6 +43,7 @@ const SignIn: React.FC = () => {
 
   const [showCreateAccount, setShowCreateAccount] = useState(true);
   const navigation = useNavigation();
+  const { signIn, user } = useAuth();
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', _hideCreateAccount);
@@ -77,7 +79,10 @@ const SignIn: React.FC = () => {
         abortEarly: false,
       });
 
-      console.log('data', data)
+      await signIn({
+        email: data.email,
+        password: data.password
+      });
 
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -93,7 +98,7 @@ const SignIn: React.FC = () => {
         'Ocorreu um erro ao fazer login, cheque as credenciais.'
       );
     }
-  }, []);
+  }, [signIn]);
 
   return (
     <>
@@ -132,7 +137,7 @@ const SignIn: React.FC = () => {
                 icon="lock"
                 placeholder="Senha"
                 secureTextEntry={
-                  formRef.current?.getFieldError('password') ===
+                  formRef.current?.getFieldError('password') !==
                   'Senha obrigatória'
                 }
                 returnKeyType="send"
