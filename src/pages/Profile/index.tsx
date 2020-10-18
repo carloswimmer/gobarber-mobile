@@ -6,15 +6,15 @@ import { useAuth } from '../../hooks/auth';
 
 import Button from '../../components/Button';
 
-const Dashboard: React.FC = () => {
+const Profile: React.FC = () => {
   const { signOut } = useAuth();
 
   return (
     <Container>
-      <Title>GoBarber Dashboard</Title>
+      <Title>GoBarber Profile</Title>
       <Button onPress={signOut}>Sair</Button>
     </Container>
   );
 };
 
-export default Dashboard;
+export default Profile;

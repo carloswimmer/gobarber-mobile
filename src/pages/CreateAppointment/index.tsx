@@ -6,15 +6,15 @@ import { useAuth } from '../../hooks/auth';
 
 import Button from '../../components/Button';
 
-const Dashboard: React.FC = () => {
+const CreateAppointment: React.FC = () => {
   const { signOut } = useAuth();
 
   return (
     <Container>
-      <Title>GoBarber Dashboard</Title>
+      <Title>GoBarber CreateAppointment</Title>
       <Button onPress={signOut}>Sair</Button>
     </Container>
   );
 };
 
-export default Dashboard;
+export default CreateAppointment;
