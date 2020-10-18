@@ -1,17 +1,30 @@
-import React, { createContext, useContext, useState, useCallback, useLayoutEffect, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../services/api';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+}
+
 interface AuthContextData {
-  user: object;
+  user: User;
   loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
 
 interface AuthState {
-  user: object;
+  user: User;
   token: string;
 }
 
@@ -28,10 +41,10 @@ const AuthProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     async function loadStoragedData(): Promise<void> {
-      const [token, user] = await AsyncStorage.multiGet(
-        ['@GoBarber:token', '@GoBarber:user']
-      );
-
+      const [token, user] = await AsyncStorage.multiGet([
+        '@GoBarber:token',
+        '@GoBarber:user',
+      ]);
 
       if (token[1] && user[1]) {
         setData({ token: token[1], user: JSON.parse(user[1]) });
@@ -50,8 +63,8 @@ const AuthProvider: React.FC = ({ children }) => {
 
     await AsyncStorage.multiSet([
       ['@GoBarber:token', token],
-      ['@GoBarber:user', JSON.stringify(user)]
-    ])
+      ['@GoBarber:user', JSON.stringify(user)],
+    ]);
 
     setData({ token, user });
   }, []);
