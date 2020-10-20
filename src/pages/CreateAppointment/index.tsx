@@ -143,6 +143,15 @@ const CreateAppointment: React.FC = () => {
       setSelectedHour(0);
       setChangeAvailability(state => !state);
     } catch (err) {
+      if (!selectedHour) {
+        Alert.alert(
+          'Escolha um horário',
+          "Após escolher um horário, clique no botão 'Agendar'.",
+        );
+
+        return;
+      }
+
       Alert.alert(
         'Erro no agendamento',
         'Ocorreu um erro ao tentar criar um agendamento, tente novamente.',
