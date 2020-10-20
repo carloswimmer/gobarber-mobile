@@ -59,13 +59,12 @@ const CreateAppointment: React.FC = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedHour, setSelectedHour] = useState(0);
-  const [changeAvailability, setChangeAvailability] = useState(false);
   const [availability, setAvailability] = useState<AvailabilityItem[]>([]);
   const [selectedProvider, setSelectedProvider] = useState(
     routeParams.providerId,
   );
 
-  const { signOut, user } = useAuth();
+  const { user } = useAuth();
   const { goBack, navigate } = useNavigation();
 
   useEffect(() => {
@@ -93,7 +92,7 @@ const CreateAppointment: React.FC = () => {
         'Ocorreu um erro ao consultar os dias disponíveis, tente novamente.',
       );
     }
-  }, [selectedDate, selectedProvider, changeAvailability]);
+  }, [selectedDate, selectedProvider]);
 
   const navigateBack = useCallback(() => {
     goBack();
@@ -139,9 +138,6 @@ const CreateAppointment: React.FC = () => {
       navigate('AppointmentCreated', {
         date: date.getTime(),
       });
-
-      setSelectedHour(0);
-      setChangeAvailability(state => !state);
     } catch (err) {
       if (!selectedHour) {
         Alert.alert(
